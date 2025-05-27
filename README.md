@@ -4,7 +4,7 @@
 
 -[Javascripts Version] (./jsversions.md)
 -[Data Types] (./datatypes.md)
--[let,const,var]
+-[let,const,var] (./letconstvar.md) 
 -[Operators]
 -[Strings]
 -[if-else statements]
