@@ -2,8 +2,8 @@
 
 #Topics covered
 
--[Javascripts Version] ()
--[Data Types]
+-[Javascripts Version] (./jsversions.md)
+-[Data Types] (./datatypes.md)
 -[let,const,var]
 -[Operators]
 -[Strings]
