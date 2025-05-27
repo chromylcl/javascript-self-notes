@@ -1,4 +1,4 @@
-** let **
+* let *
 Here the value of the variable can be changed or assigned different values.
 For ex:-
 `let age = 30;` 
