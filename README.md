@@ -6,7 +6,7 @@
 -[Data Types](datatypes.md)
 -[let,const,var](letconstvar.md) 
 -[Operators](operators.md)
--[Strings]
+-[Strings](strings.md)
 -[if-else statements]
 -[Type Conversion and Coercion]
 -[Truthy&Falsy values]
