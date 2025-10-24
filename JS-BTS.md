@@ -1,29 +1,29 @@
-1. High level
+1. High level: 
 Its a high level programming language as it does not require to manage resource manually for the developer as in case of C.
-2. Garbage-collected
+2. Garbage-collected: 
 Cleaning the memory so we dont have to.
-3. Interpreted or just-in-time compiled
+3. Interpreted or just-in-time compiled: 
 conversion of Human code to machine code is done in JS engine.
 
-4. Multi-paradigm
+4. Multi-paradigm: 
 **Paradigm** : An approach and mindset of structuring code, which will direct your coding style and technique.
 such as:
 - procedural programming
 - Object-oriented-programming (OOP)
 - FUNDAMENTAL PROGRAMING (FP)
 - 
-5. Prototype-based object-oriented
+5. Prototype-based object-oriented: 
   <img width="623" height="432" alt="image" src="https://github.com/user-attachments/assets/0a889470-4068-4a40-9162-39f497eb24ee" />
 
-6. First-class functions
+6. First-class functions: 
 -> In a language with **first-class-functions**,functions are simply treated as variables. We can pass them into other functions, and return them from functions.
 
-7. Dynamic
+7. Dynamic: 
 -> Dynamically typed language:
    - No datatype definitions. Types become known at runtime.
    - Data type of variable is automatically changed (reinterpretetion).
 
-8. Single-threaded
+8. Single-threaded: 
 <img width="578" height="413" alt="image" src="https://github.com/user-attachments/assets/ed971fac-fbea-4a4f-8db4-272756f8c97b" />
 
 
