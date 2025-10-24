@@ -1,3 +1,4 @@
+# How JavaScript works Behind the Scenes ?
 1. High level: 
 Its a high level programming language as it does not require to manage resource manually for the developer as in case of C.
 2. Garbage-collected: 
