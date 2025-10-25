@@ -326,12 +326,15 @@ Output:
 .
 .
 ```
+- Ex:
+```
 for (const item of menu.entries()) console.log(item);
 
 Output:
 1,Pizza
 2,Latte
 ```
+- Better version
 ```
 for (const [i,el] of menu.entries()){
   console.log(`${i + 1}: ${el}`);
