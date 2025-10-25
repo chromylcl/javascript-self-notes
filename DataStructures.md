@@ -140,3 +140,66 @@ console.log(o, c);
 ```
 <img width="697" height="234" alt="image" src="https://github.com/user-attachments/assets/0372b03a-ec17-481c-b7cf-a87379290c9c" />
 
+## Spread operator
+- We can use the spread operator to basically expand an array into all its elements, unpacking all the array elements at once.
+- Let's say we have an array: [7, 8, 9]. Now, we want to create a new array based on this array but with some new elements at the beginning. How would we do that?
+- With what we already know, we would need to loop over this array or, even worse, do it manually. For example, like this:
+```
+const badNewArray = [1, 2, arr[0], arr[1], arr[2]];
+```
+- Now, we want a new array with the three original elements and then 1, 2 at the beginning of that array. This is a common operation, and since **ES6**, we can do it in a much better way using the spread operator.
+- With the spread operator, it works like this:
+```
+const newArray = [1, 2, ...arr];
+```
+- Let's see a more useful example. Suppose we want to create a new array with one more food item added to the main menu array (restaurant.mainMenu).
+```
+const newMenu = [...restaurant.mainMenu, 'gnocchi'];
+```
+- This creates a new array with the three original elements plus 'gnocchi'. Note that this creates a completely new array and **does not mutate** restaurant.mainMenu.
+- To join two arrays together, for example, the starter menu and main menu:
+```
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+```
+- Although the spread operator works on arrays, it actually works on all so-called iterables. Iterables in JavaScript include arrays, strings, maps, and sets, but not objects.
+- Since strings are iterables, we can use the spread operator on strings as well. For example:
+```
+const letters = [...'Jonas', '', 'S'];
+console.log(letters);
+```
+- For example, a method to order pasta that always needs exactly three ingredients:
+```
+orderPasta(ing1, ing2, ing3) {
+  console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, and ${ing3}.`);
+}
+```
+- We can collect ingredients from user input using prompt windows and store them in an array:
+```
+const ingredients = [
+  prompt("Let's make pasta. Ingredient one?"),
+  prompt("Ingredient two?"),
+  prompt("Ingredient three?")
+];
+```
+- To call the orderPasta function with these ingredients, instead of passing each element manually, we use the spread operator:
+```
+orderPasta(...ingredients);
+```
+- This expands the elements of the ingredients array into individual arguments, which is much cleaner and works for arrays of any length.
+
+- Since ES2018, the spread operator also works on objects, even though objects are not iterables.
+
+- For example, to create a new restaurant object based on an existing one with additional properties:
+```
+const newRestaurant = {
+  ...restaurant,
+  founder: 'Giuseppe',
+  foundedIn: 1998
+};
+```
+- This copies all properties from the original restaurant object and adds new properties founder and foundedIn.
+- We can also create shallow copies of objects using the spread operator:
+```
+const restaurantCopy = { ...restaurant };
+```
+- This confirms that the spread operator creates a shallow copy, preventing changes in one object from affecting the other.
