@@ -267,7 +267,7 @@ restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
 - To recap, the spread and rest syntax both look exactly the same but work in opposite ways depending on where they are used. The spread operator is used where we would otherwise write **values** separated by commas, while the rest pattern is used where we would write **variable names** separated by commas. This subtle distinction helps determine when to use spread or rest in JavaScript.
 
 
-### Logical Assignment Operators:
+## Logical Assignment Operators:
 - **Creating Restaurant Objects**:Let us begin by creating two simple restaurant objects. Each object will have a name, and one will have a numGuests property while the other will have an owner property.
 ```
 const restaurant1 = {
@@ -312,3 +312,32 @@ restaurant2.owner &&= 'Anonymous';
 - If the owner property exists and is truthy, it is replaced with 'Anonymous'. If it does not exist, nothing happens and the object remains unchanged.
 **Summary**:
   - Logical assignment operators provide concise and expressive ways to assign values based on the current state of variables. The OR assignment operator assigns if the variable is falsy, the nullish assignment operator assigns if the variable is nullish, and the AND assignment operator assigns if the variable is truthy.
+
+## for-of loop:
+- Looping over arrays.
+```
+for (const item of menu) console.log(item);
+
+Output:
+1.menu
+2.menu
+.
+.
+.
+.
+```
+for (const item of menu.entries()) console.log(item);
+
+Output:
+1,Pizza
+2,Latte
+```
+```
+for (const [i,el] of menu.entries()){
+  console.log(`${i + 1}: ${el}`);
+}
+
+Output:
+1: Pizza
+2: Pasta
+```
