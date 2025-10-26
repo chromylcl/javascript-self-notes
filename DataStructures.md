@@ -561,23 +561,32 @@ const checkBaggage = function (items) {
     console.log('Welcome abroad!');
   }
 };
-
 checkBaggage('I have a laptop!');
 checkBaggage('Socks and camera!');
 checkBaggage('Got some snacks and gun for protection!');
 ```
+
+
 - **The split Method**:
 - One of the most powerful string methods is split. The split method allows us to divide a string into multiple parts based on a divider string.
+
+
 ```
 const str = 'A+very+nice+string';
 const parts = str.split('+');
 ```
+
+
 - This code splits the string by the plus sign and stores the results into elements of a **new array**. The result is an array containing 'A', 'very', 'nice', and 'string'.
 - **The join Method**:
 - The join method is essentially the opposite of split. It combines array elements into a single string, using a specified divider.
+
+
 ```
 const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
 ```
+
+
 - **Capitalizing Names**:
 - We can use split and join to capitalize the first letter of each word in a full name, even if the name has multiple parts.
 ```
@@ -590,10 +599,14 @@ function capitalizeName(name) {
   console.log(namesUpper.join(' '));
 }
 ```
+
+
 - Alternate approach:
 ```
 namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
 ```
+
+
 - **Padding Strings**: Padding a string means adding characters to the beginning or end of a string until it reaches a desired length.
 ```
 const message = 'Go to gate 23!';
@@ -607,6 +620,9 @@ Output:
 +++++++++++Go to gate 23!++++++++++
 +++++++++++++++Jonas
 ```
+
+
+
 - **Masking Credit Card Numbers**: A common use case for padding is masking credit card numbers, showing only the last four digits.
 ```
 function maskCreditCard(number) {
@@ -619,6 +635,9 @@ console.log(maskCreditCard('12345678'));
 console.log(maskCreditCard(1234));
 ```
 - This function converts the number to a string, takes the last four characters, and pads the start with asterisks to match the original length.
+
+
+
 - **The repeat Method**: The repeat method allows us to repeat a string multiple times.
 ```
 const message2 = 'Bad weather... All departures delayed... ';
