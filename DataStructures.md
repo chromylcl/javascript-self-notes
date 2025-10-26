@@ -543,3 +543,84 @@ console.log([...question]);
 <img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/d8c555b7-569b-46c5-90a8-4f3892c31d81" />
 <img width="941" height="532" alt="image" src="https://github.com/user-attachments/assets/1824d629-cf41-47a1-a91a-02c5b1c4c7b0" />
 
+# Working with Strings
+<img width="944" height="545" alt="image" src="https://github.com/user-attachments/assets/626c29d2-df90-4786-ab6b-fee869b075bf" />
+- Now let's understand why all of this works. Strings are primitives, so why do they have methods? Methods are usually available on objects such as arrays.
+- JavaScript is smart and automatically converts string primitives to string objects behind the scenes when a method is called. This process is called **boxing**.
+- Another method is `.toLowerCase()` and `.toUpperCase()` , `.replace('$' , '#')`
+- For global changing of string: `.replace(/door/g , 'gate')`
+- To check whether : `.includes()` it will return a boolean value.
+- `.startsWith()` and `.endsWith()`.
+- Check Baggage: 
+```
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are NOT allowed on board!');
+  } else {
+    console.log('Welcome abroad!');
+  }
+};
+
+checkBaggage('I have a laptop!');
+checkBaggage('Socks and camera!');
+checkBaggage('Got some snacks and gun for protection!');
+```
+- **The split Method**:
+- One of the most powerful string methods is split. The split method allows us to divide a string into multiple parts based on a divider string.
+```
+const str = 'A+very+nice+string';
+const parts = str.split('+');
+```
+- This code splits the string by the plus sign and stores the results into elements of a **new array**. The result is an array containing 'A', 'very', 'nice', and 'string'.
+- **The join Method**:
+- The join method is essentially the opposite of split. It combines array elements into a single string, using a specified divider.
+```
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
+```
+- **Capitalizing Names**:
+- We can use split and join to capitalize the first letter of each word in a full name, even if the name has multiple parts.
+```
+function capitalizeName(name) {
+  const names = name.split(' ');
+  const namesUpper = [];
+  for (const n of names) {
+    namesUpper.push(n[0].toUpperCase() + n.slice(1));
+  }
+  console.log(namesUpper.join(' '));
+}
+```
+- Alternate approach:
+```
+namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
+```
+- **Padding Strings**: Padding a string means adding characters to the beginning or end of a string until it reaches a desired length.
+```
+const message = 'Go to gate 23!';
+console.log(message.padStart(25, '+'));
+console.log('Jonas'.padStart(25, '+'));
+console.log(message.padStart(25, '+').padEnd(35, '+'));
+console.log('Jonas'.padStart(20, '+').padEnd(20, '+'));
+Output:
++++++++++++Go to gate 23!
+++++++++++++++++++++Jonas
++++++++++++Go to gate 23!++++++++++
++++++++++++++++Jonas
+```
+- **Masking Credit Card Numbers**: A common use case for padding is masking credit card numbers, showing only the last four digits.
+```
+function maskCreditCard(number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  return last.padStart(str.length, '*');
+}
+console.log(maskCreditCard(1234567890123456));
+console.log(maskCreditCard('12345678'));
+console.log(maskCreditCard(1234));
+```
+- This function converts the number to a string, takes the last four characters, and pads the start with asterisks to match the original length.
+- **The repeat Method**: The repeat method allows us to repeat a string multiple times.
+```
+const message2 = 'Bad weather... All departures delayed... ';
+console.log(message2.repeat(5));
+```
