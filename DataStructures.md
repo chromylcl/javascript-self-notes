@@ -344,3 +344,202 @@ Output:
 1: Pizza
 2: Pasta
 ```
+## Optional Chaining (?.):
+- Here first it will check for that property if it exist then it wil show otherwise error.
+<img width="943" height="671" alt="image" src="https://github.com/user-attachments/assets/c537918d-fdc8-4642-ad4d-1fe639b5536c" />
+- with **arrays** and **methods**:
+<img width="941" height="545" alt="image" src="https://github.com/user-attachments/assets/6a8b19cd-c01e-44fa-9618-da53c34c3941" />
+
+## Looping Objects
+- We learned about the for...of loop to loop over arrays, which are iterable. However, we can also loop over objects, which are not iterable, but in an indirect way.
+- Now, we have different options here, depending on what exactly we want to loop over. Do we want to loop over the object's property names, over the values, or both together?
+- **Looping Over Property Names (Keys)**: Let us start by simply looping over property names, which are also called **keys**.
+- Ultimately, we will still have to use the for...of loop to loop over an array, but again, we are going to do that in an indirect way. We are not actually looping over the object itself. Instead, we are going to loop over an array.
+```
+for (const day of Object.keys(openingHours)) {
+  console.log(day);
+}
+```
+- ndeed, we get Thursday, Friday, and Saturday, which are exactly the three key names of the object. So, let us take a closer look at this mysterious Object.keys.
+```
+const properties = Object.keys(openingHours);
+console.log(properties);
+```
+- Indeed, it is an **array** with the three property names.
+- **Building a String of Open Days**: We will build a string listing the open days.
+```
+let openStr = `We are open on ${properties.length} days: `;
+for (const day of properties) {
+  openStr += `${day}, `;
+}
+console.log(openStr);
+```
+- The result is: We are open on three days: Thursday, Friday, Saturday.
+- **Looping over Property values**:If we want the property values themselves, we simply use Object.values.
+```
+const values = Object.values(openingHours);
+console.log(values);
+```
+- To loop over the entire object, we use Object.entries, which gives us both names and values together.
+```
+const entries = Object.entries(openingHours);
+console.log(entries);
+```
+- Now, we have each key and each value. To print a string like "On the weekday, we open at... and close at...", we can use destructuring.
+```
+for (const [key, { open, close }] of entries) {
+  console.log(`On ${key}, we open at ${open} and close at ${close}.`);
+}
+```
+
+# SETS
+- In the past, JavaScript had very few built-in data structures. Basically, only objects and arrays were available. With ES6, two more data structures were introduced: sets and maps. These are common data structures in other programming languages and now exist in JavaScript as well.
+- A set is a collection of unique values. This means a set can never have any duplicates. That property makes them useful in certain situations.
+
+```
+const orderSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+console.log(orderSet);
+console.log(new Set('Jonas'));
+console.log(orderSet.size);
+console.log(orderSet.has('Pizza'));
+orderSet.add('Garlic Bread!');
+orderSet.clear();
+```
+- We can't retrieve value from set because order doesnot matter!
+```
+const orderSet = new Set([
+  'Pasta',
+  'Pizza',
+  'Pizza',
+  'Risotto',
+  'Pasta',
+  'Pizza',
+]);
+console.log(orderSet);
+console.log(new Set('Jonas'));
+console.log(orderSet.size);
+console.log(orderSet.has('Pizza'));
+orderSet.add('Garlic Bread!');
+const staff = ['Waiter', 'Chef', 'Manager', 'Chef'];
+const staffRoles = new Set(staff);
+console.log(staffRoles);
+
+// Unpacking with ...Spread operator
+const sr = [...new Set(staff)];
+console.log(sr);
+```
+- **Intersection**: Elements present in both of the Sets.
+```
+const commonFoods = italianfoods.intersection(mexicanfoods);
+```
+- **Union**: Elements from both sets.
+```
+const u = italianfoods.union(mexicanfoods);
+```
+- **Set to array**:
+```
+const commonFoodsArray = [...commonFoods]
+```
+- **Finding Unique Elements: Difference**
+```
+const uniqueItalianFoods = italianFoods.difference(mexicanFoods)
+```
+- Similarly, we can find the unique Mexican foods by reversing the order.
+```
+const uniqueMexicanFoods = mexicanFoods.difference(italianFoods)
+```
+- **Symmetric Difference**: The symmetric difference method gives us all elements present in either set, but not in both. This is the opposite of the intersection method. The order does not matter for this method.
+```
+const uniqueItalianAndMexicanFoods = italianFoods.symmetricDifference(mexicanFoods)
+```
+- **Set Relationship Methods**: There are three more methods to check set relationships: isSubsetOf, isSupersetOf, and isDisjointFrom. These methods return Boolean values. For example, isDisjointFrom checks whether two sets are completely different.
+```
+console.log(italianFoods.isDisjointFrom(mexicanFoods))
+```
+## MAPS 
+- A map is not the same thing that we use in real life to find our way around. In JavaScript, a map is a data structure that we can use to map values to keys. Just like an object, data is stored in key-value pairs in maps. The big difference between objects and maps is that in maps, the keys can have any type, and this can be huge. In objects, the keys are basically always strings, but in maps, we can have any type of key. It could even be objects, arrays, or other maps.
+- Let us create a restaurant map. We use the constructor just like we used for the set, but this one is called Map. The easiest way to create a map is to create an empty map without passing anything in. To fill up the map, we use the set method. The first argument is the key name, and the second is the value.
+```
+const rest = new Map();
+rest.set('name', 'Classico Italiano');
+```
+- The set method is similar to the add method in sets. Both allow us to add a new element to the data structure. We can use any data type that we want as a key. For example, if the restaurant has two locations, we can create a key with a number.
+```
+rest.set(1, 'Firenze, Italy');
+rest.set(2, 'Lisbon, Portugal');
+```
+- Calling the set method not only updates the map but also returns the map. This allows us to chain the set method.
+```
+rest.set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+    .set('open', 11)
+    .set('close', 23)
+    .set(true, 'We are open')
+    .set(false, 'We are closed');
+```
+- **Reading Data from a Map**: To read data from a map, we use the get method. All we need to do is pass in the name of the key.
+```
+console.log(rest.get('name'));
+console.log(rest.get(true));
+```
+- When we get the elements, the data type of the key matters. If we try to retrieve a value using a string when the key is a number, it will be undefined.
+```
+console.log(rest.get(1)); // Firenze, Italy
+console.log(rest.get('1')); // undefined
+```
+- **Using Boolean keys for Clever Logic**:
+```
+const time = 21;
+console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
+```
+- Maps also have methods to check if a map contains a certain key, delete elements, and clear all elements.
+```
+console.log(rest.has('categories')); // true
+rest.delete(2); // Deletes the Lisbon location
+console.log(rest.size); // Number of items in the map
+rest.clear(); // Removes all elements from the map
+```
+- **Using Objects and Arrays as Map Keys**:
+```
+rest.set([1, 2], 'Test');
+const arr = [1, 2];
+rest.set(arr, 'Test');
+console.log(rest.get(arr)); // 'Test'
+```
+- **Using DOM Elements as Map Keys**:
+```
+rest.set(document.querySelector('h1'), 'Heading');
+```
+- **Maps iteration**:
+```
+const question = new Map([
+  ['question', 'What is the best programming language?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct'],
+  [false, 'Try again!'],
+]);
+
+console.log(question);
+```
+- for loop:
+```
+for(const [key,value] of question) 
+```
+<img width="867" height="320" alt="image" src="https://github.com/user-attachments/assets/62752b6d-e9cf-42ee-85ab-2e1b49d37f35" />
+- **MAP to array**:
+```
+console.log([...question]);
+```
+# Which Data Structure to use?
+<img width="940" height="528" alt="image" src="https://github.com/user-attachments/assets/d8c555b7-569b-46c5-90a8-4f3892c31d81" />
+<img width="941" height="532" alt="image" src="https://github.com/user-attachments/assets/1824d629-cf41-47a1-a91a-02c5b1c4c7b0" />
+
