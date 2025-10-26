@@ -546,12 +546,16 @@ console.log([...question]);
 # Working with Strings
 <img width="944" height="545" alt="image" src="https://github.com/user-attachments/assets/626c29d2-df90-4786-ab6b-fee869b075bf" />
 - Now let's understand why all of this works. Strings are primitives, so why do they have methods? Methods are usually available on objects such as arrays.
+
 - JavaScript is smart and automatically converts string primitives to string objects behind the scenes when a method is called. This process is called **boxing**.
 - Another method is `.toLowerCase()` and `.toUpperCase()` , `.replace('$' , '#')`
 - For global changing of string: `.replace(/door/g , 'gate')`
 - To check whether : `.includes()` it will return a boolean value.
 - `.startsWith()` and `.endsWith()`.
-- Check Baggage: 
+
+
+- Check Baggage:
+
 ```
 const checkBaggage = function (items) {
   const baggage = items.toLowerCase();
