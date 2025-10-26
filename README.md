@@ -23,4 +23,5 @@
 -[USING AI TOOLS](aitools.md)
 -[DOM](DOM.md)
 -[JavaScript Behind The Scenes](JS-BTS.md)
--[Data Structures in JavaScript]
+-[Data Structures in JavaScript](DataStructures.md)
+
