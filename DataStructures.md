@@ -73,7 +73,7 @@ const [i, , [j, k]] = nested;
 const [p, q, r = 1] = [8, 9];
 console.log(p, q, r);
 ```
-## Destructing Objects
+# Destructing Objects
 ```
 'use strict';
 
@@ -140,7 +140,7 @@ console.log(o, c);
 ```
 <img width="697" height="234" alt="image" src="https://github.com/user-attachments/assets/0372b03a-ec17-481c-b7cf-a87379290c9c" />
 
-## Spread operator
+# Spread operator
 - We can use the spread operator to basically expand an array into all its elements, unpacking all the array elements at once.
 - Let's say we have an array: [7, 8, 9]. Now, we want to create a new array based on this array but with some new elements at the beginning. How would we do that?
 - With what we already know, we would need to loop over this array or, even worse, do it manually. For example, like this:
@@ -204,7 +204,7 @@ const restaurantCopy = { ...restaurant };
 ```
 - This confirms that the spread operator creates a shallow copy, preventing changes in one object from affecting the other.
 
-## Rest patter and parameters:
+# Rest patter and parameters:
 Remember that we used the spread operator to build new arrays or to pass multiple values into a function. In both cases, we use the spread operator to expand an array into individual elements. The rest pattern uses the exact same syntax but to collect multiple elements and condense them into an array. So, the spread operator unpacks an array, while the rest pattern packs elements into an array.
 
 - **Using the rest patter in Array Destructing**: Let's explore the use case of building an array using the rest pattern. Previously, we used the spread operator on the right-hand side of the assignment operator to create a new array based on an existing one. Here, we can also use the three dots syntax on the left-hand side of the assignment operator together with destructuring.
@@ -267,7 +267,7 @@ restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
 - To recap, the spread and rest syntax both look exactly the same but work in opposite ways depending on where they are used. The spread operator is used where we would otherwise write **values** separated by commas, while the rest pattern is used where we would write **variable names** separated by commas. This subtle distinction helps determine when to use spread or rest in JavaScript.
 
 
-## Logical Assignment Operators:
+# Logical Assignment Operators:
 - **Creating Restaurant Objects**:Let us begin by creating two simple restaurant objects. Each object will have a name, and one will have a numGuests property while the other will have an owner property.
 ```
 const restaurant1 = {
@@ -313,7 +313,7 @@ restaurant2.owner &&= 'Anonymous';
 **Summary**:
   - Logical assignment operators provide concise and expressive ways to assign values based on the current state of variables. The OR assignment operator assigns if the variable is falsy, the nullish assignment operator assigns if the variable is nullish, and the AND assignment operator assigns if the variable is truthy.
 
-## for-of loop:
+# for-of loop:
 - Looping over arrays.
 ```
 for (const item of menu) console.log(item);
@@ -344,13 +344,13 @@ Output:
 1: Pizza
 2: Pasta
 ```
-## Optional Chaining (?.):
+# Optional Chaining (?.):
 - Here first it will check for that property if it exist then it wil show otherwise error.
 <img width="943" height="671" alt="image" src="https://github.com/user-attachments/assets/c537918d-fdc8-4642-ad4d-1fe639b5536c" />
 - with **arrays** and **methods**:
 <img width="941" height="545" alt="image" src="https://github.com/user-attachments/assets/6a8b19cd-c01e-44fa-9618-da53c34c3941" />
 
-## Looping Objects
+# Looping Objects
 - We learned about the for...of loop to loop over arrays, which are iterable. However, we can also loop over objects, which are not iterable, but in an indirect way.
 - Now, we have different options here, depending on what exactly we want to loop over. Do we want to loop over the object's property names, over the values, or both together?
 - **Looping Over Property Names (Keys)**: Let us start by simply looping over property names, which are also called **keys**.
@@ -463,7 +463,7 @@ const uniqueItalianAndMexicanFoods = italianFoods.symmetricDifference(mexicanFoo
 ```
 console.log(italianFoods.isDisjointFrom(mexicanFoods))
 ```
-## MAPS 
+# MAPS 
 - A map is not the same thing that we use in real life to find our way around. In JavaScript, a map is a data structure that we can use to map values to keys. Just like an object, data is stored in key-value pairs in maps. The big difference between objects and maps is that in maps, the keys can have any type, and this can be huge. In objects, the keys are basically always strings, but in maps, we can have any type of key. It could even be objects, arrays, or other maps.
 - Let us create a restaurant map. We use the constructor just like we used for the set, but this one is called Map. The easiest way to create a map is to create an empty map without passing anything in. To fill up the map, we use the set method. The first argument is the key name, and the second is the value.
 ```
