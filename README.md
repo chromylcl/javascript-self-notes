@@ -1,6 +1,6 @@
 # javascript-self-notes
 
-#Topics covered
+# Topics covered
 
 -[Javascripts Version](jsversions.md)
 -[Data Types](datatypes.md)
@@ -22,3 +22,5 @@
 -[LOOPS](Loops.md)
 -[USING AI TOOLS](aitools.md)
 -[DOM](DOM.md)
+-[JavaScript Behind The Scenes](JS-BTS.md)
+-[Data Structures in JavaScript]
