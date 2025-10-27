@@ -155,4 +155,46 @@ getUser(1, (user) => {
   });
 });
 
+# Yt
+```
+let order = (call_production) => {
+  console.log("Order placed");
+  call_production();
+};
+let production = () => {
+  console.log("order received starting preparation");
+};
+order(production);
 
+```
+
+
+
+
+
+
+
+```
+let stocks = {
+  Fruits: ["Strawberry", "grapes", "banana", "apple"]
+};
+
+let order = (fruit_name, call_production) => {
+  setTimeout(() => {
+    console.log(`${stocks.Fruits[fruit_name]}`);
+    call_production();
+  }, 2000);
+};
+let production = () => {
+  setTimeout(() => {
+    console.log(`Prep started`);
+    setTimeout(() => {
+      console.log("Fruit has been chopped");
+      setTimeout(()=>{
+        console.log(`${stocks.liquid[0]} and thta was added!`)
+      },1000)
+    }, 2000);
+  }, 0000);
+};
+order(0, production);
+```
