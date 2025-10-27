@@ -61,5 +61,98 @@ getCountryData('portugal');
 - HTTPS is encrypted with TLS.
 - Then HTTP Response is sent.
 - <img width="547" height="127" alt="image" src="https://github.com/user-attachments/assets/33263f19-3154-4543-a26f-99af97d16928" />
+
+
+
 - Displaying **neighbour** countries :
 https://github.com/chromylcl/javascript-self-notes/blob/main/AJAX.js
+
+# Promises
+- In the previous video, we encountered Callback Hell, which was quite problematic. In this lecture, we will learn about a modern JavaScript feature called Promises that helps us escape Callback Hell. Before diving into promises, let's first see one in action by replacing the old XML HTTP request function with the modern way of making AJAX calls using the Fetch API.
+- An object that is used as a plaeholder for the future result of an asynchronous operation.
+- A container for an asynchronous delivered value.
+- A container for a future value. (Response coming from AJAX calls)
+- Ex: Lottery ticket
+- I buy a lottery ticket(promise)
+- Lottery draw happens asynchronously.
+- If correct outcome, I receive money.
+- **Advantages**:
+- Promises eliminate the need to rely on events and callback functions to handle asynchronous results, which can sometimes cause unpredictable behavior.
+- Promises allow chaining for sequences of asynchronous operations instead of nesting callbacks. This chaining capability helps us finally escape Callback Hell.
+- **Life Cycle of a Promise**:
+- Promises are time-sensitive and change states over time. The life cycle of a promise includes:
+- **Pending**: The initial state before any value is available. The asynchronous task is **still running**.
+- **Settled**: The promise has **finished** and is either:
+- *Fulfilled*: The asynchronous task succeeded, and the expected value is available.
+- *Rejected*: The asynchronous task failed, such as when a user is offline and cannot connect to an API.
+- Once a promise is settled, its state remains unchanged forever.
+- Returning to the lottery ticket analogy, the lottery draw is the asynchronous task determining the result. Once the result is available, the ticket (promise) is settled.
+- If the guess was correct, the ticket is fulfilled and you receive money; if not, the ticket is rejected and you lose your money.
+- Understanding these states is crucial because when using promises in code, we handle different states to perform actions based on success or failure.
+- **Consume a promise** : When we already hav a promise.
+- Build a promise: Fetch API returs a promise.
+- And then we consume that promise returned fro the Fetch API .
+
+```
+/*const request = fetch('https://restcountries.com/v3.1/name/portugal');
+console.log(request);*/
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+    });
+};
+getCountryData('portugal');
+```
+- here whats happening:
+- The fetch function returns a promise.
+- We handle that promise using the then method.
+- To read the data from the response, we call the json method on the response object, which returns another promise.
+- We return this promise and handle it with another then method.
+- The resolved value of this second promise is the actual data we want.
+- Finally, we render the first country from the data array by calling `renderCountry(data[0])`.
+- This completes the process of fetching and consuming data using promises.
+- The code almost reads like English sentences: `fetch` something, get a `response`, transform it to `JSON`, then `render` the country to the DOM.
+- Promises do not eliminate callbacks but help avoid callback hell, especially as complexity increases, such as when loading neighboring countries.
+
+## Chainig promises
+- Promises can be chained to perform sequential asynchronous operations, such as multiple Ajax calls.
+- The then method always returns a new promise, allowing for flat and readable chains instead of nested callbacks.
+- Returning a promise inside a then handler enables chaining the next then on the returned promise's fulfillment value.
+- Avoid nesting then calls inside other then handlers to prevent callback hell; instead, return promises and chain externally.
+# 🚀 Understanding Promise Chaining in JavaScript
+
+Promises make asynchronous JavaScript cleaner and easier to manage — especially when performing multiple async operations in sequence (like API calls).
+
+This guide explains:
+- How Promise chaining works
+- Why `.then()` always returns a new Promise
+- How to return Promises correctly
+- How to avoid nesting (callback hell)
+
+---
+
+## 🧩 1️⃣ Promises Can Be Chained for Sequential Operations
+
+Imagine you need to:
+1. Fetch user data  
+2. Then fetch that user’s posts  
+3. Then fetch post comments  
+
+Instead of deeply nested callbacks 👇
+
+### ❌ Callback Hell Example
+```js
+getUser(1, (user) => {
+  getPosts(user.id, (posts) => {
+    getComments(posts[0].id, (comments) => {
+      console.log(comments);
+    });
+  });
+});
+
+
