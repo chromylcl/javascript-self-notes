@@ -61,3 +61,5 @@ getCountryData('portugal');
 - HTTPS is encrypted with TLS.
 - Then HTTP Response is sent.
 - <img width="547" height="127" alt="image" src="https://github.com/user-attachments/assets/33263f19-3154-4543-a26f-99af97d16928" />
+- Displaying **neighbour** countries :
+[Here is the code].(AJAX.js)
