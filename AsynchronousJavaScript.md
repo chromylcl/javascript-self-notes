@@ -439,6 +439,10 @@ whereAmI(21.1458, 79.088155);
 ------------------------------------------------------------------------
 
 <img width="941" height="521" alt="image" src="https://github.com/user-attachments/assets/16593ef8-291f-4389-a902-5a6b73387415" />
+
+
+
+
 ## 🔹 1. JavaScript Runtime Environment
 
 A JavaScript runtime consists of:
