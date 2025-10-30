@@ -434,3 +434,189 @@ const whereAmI = function (lat, lng) {
 };
 whereAmI(21.1458, 79.088155);
 ```
+# 🧠 Asynchronous JavaScript: Behind the Scenes
+
+------------------------------------------------------------------------
+
+<img width="941" height="521" alt="image" src="https://github.com/user-attachments/assets/16593ef8-291f-4389-a902-5a6b73387415" />
+## 🔹 1. JavaScript Runtime Environment
+
+A JavaScript runtime consists of:
+
+-   **Call Stack:** Where code executes line by line.\
+-   **Heap:** Memory storage for variables, objects, etc.\
+-   **Web APIs:** Browser-provided APIs (DOM, fetch, timers,
+    geolocation).\
+-   **Callback Queue:** Holds callbacks ready for execution.\
+-   **Microtasks Queue:** Special queue for Promise-related callbacks.\
+-   **Event Loop:** The conductor that manages when callbacks run.
+
+🧩 **Single-threaded:**\
+JavaScript has only one call stack, meaning one thing executes at a time
+--- no true multitasking.
+
+------------------------------------------------------------------------
+
+## 🔹 2. How Asynchronous JavaScript Works
+
+Although JS is single-threaded, asynchronous behavior is possible
+through:
+
+-   **Web APIs environment** (runs async operations like image loading,
+    AJAX calls, timers)
+-   **Event Loop** (moves callbacks to the stack when ready)
+
+### 🕹 Flow Example:
+
+1.  JS runs top-level code → synchronous.\
+2.  Async tasks (e.g., setTimeout, fetch, addEventListener) go to **Web
+    APIs**.\
+3.  When done → callback goes to **callback queue** or **microtasks
+    queue**.\
+4.  Event loop checks:
+    -   Is the call stack empty?
+    -   If yes → pushes first callback/microtask to stack.\
+5.  Execution continues.
+
+------------------------------------------------------------------------
+
+## 🔹 3. Non-Blocking Concurrency
+
+Even though JS runs one task at a time, asynchronous APIs allow:
+
+-   Tasks to execute "in the background"\
+-   Code to not block while waiting for results (e.g., data from an API)
+
+This model is called:\
+**Non-blocking, event-driven concurrency**
+
+------------------------------------------------------------------------
+
+## 🔹 4. Example: Image Loading + AJAX Call
+
+``` js
+const img = document.querySelector('img');
+img.src = 'dog.jpg'; // loads async in Web API env
+
+img.addEventListener('load', function() {
+  console.log('Image loaded!');
+});
+
+fetch('https://restcountries.com/v3.1/name/india')
+  .then(res => res.json())
+  .then(data => console.log(data));
+```
+
+### Behind the scenes:
+
+1.  Image starts loading → handled by **Web API**.\
+2.  JS continues executing.\
+3.  When the image finishes → `load` callback → added to **callback
+    queue**.\
+4.  Fetch returns a **promise** → `.then()` callback → added to
+    **microtasks queue**.
+
+### Event loop:
+
+-   Executes **microtasks first** (`.then()`).\
+-   Then executes **callback queue** tasks (like load event).
+
+------------------------------------------------------------------------
+
+## 🔹 5. Microtasks Queue vs Callback Queue
+
+  ------------------------------------------------------------------------
+  Feature          Microtasks Queue              Callback Queue
+  ---------------- ----------------------------- -------------------------
+  **Source**       Promises, `queueMicrotask()`  Timers, DOM events, etc.
+
+  **Priority**     ✅ Higher                     ⬇ Lower
+
+  **When runs**    After every event loop tick   When call stack is empty
+
+  **Risk**         Can starve callback queue     Lower priority
+  ------------------------------------------------------------------------
+
+### 🧠 Example:
+
+``` js
+setTimeout(() => console.log('Timeout'), 0);
+Promise.resolve().then(() => console.log('Promise'));
+```
+
+**Output:**
+
+    Promise
+    Timeout
+
+Because **microtasks (Promises)** run before regular callbacks.
+
+------------------------------------------------------------------------
+
+## 🔹 6. Event Loop in Action
+
+### Cycle (Tick):
+
+1.  Check if call stack is empty.\
+2.  If empty:
+    -   Execute **all microtasks** in queue.\
+    -   Then take **first callback** from callback queue.\
+3.  Repeat.
+
+### 📊 Diagram Summary:
+
+             ┌───────────────────────────┐
+             │       JavaScript Engine   │
+             │ ┌───────────────┐         │
+             │ │   Call Stack  │◄────────┘
+             │ └───────────────┘
+             │        ▲
+             │        │
+             ▼        │
+     ┌────────────┐   │
+     │ Web APIs   │───┘
+     └────────────┘
+          │
+          ▼
+     ┌──────────────┐     ┌──────────────┐
+     │ Callback Q   │◄─── │ Microtasks Q │
+     └──────────────┘     └──────────────┘
+              ▲                  │
+              └──────────┬───────┘
+                         │
+                     Event Loop
+
+------------------------------------------------------------------------
+
+## 🔹 7. Key Takeaways (Quick Revision)
+
+✅ JS executes code on a single thread (one call stack).\
+✅ Asynchronous tasks are handled by Web APIs.\
+✅ Event Loop manages execution order.\
+✅ Promises → microtasks queue (high priority).\
+✅ Timers/Events → callback queue (low priority).\
+✅ Microtasks always run before any callback.\
+✅ The Event Loop enables non-blocking, asynchronous behavior.
+
+------------------------------------------------------------------------
+
+## 🔹 8. Common Interview Questions
+
+**Q1:** Is JavaScript single-threaded or multi-threaded? Why?\
+→ Single-threaded (one call stack), but async behavior is handled via
+event loop.
+
+**Q2:** What's the difference between the callback queue and the
+microtasks queue?\
+→ Microtasks (Promises) have higher priority; callback queue handles
+events/timers.
+
+**Q3:** Why does a Promise resolve before setTimeout() even with 0 ms
+delay?\
+→ Because microtasks are executed before callback queue tasks.
+
+**Q4:** Can the microtasks queue block the callback queue?\
+→ Yes, if new microtasks keep being added continuously.
+
+**Q5:** Who manages asynchronous behavior in JavaScript?\
+→ The runtime (not JS itself) using Web APIs + Event Loop.
