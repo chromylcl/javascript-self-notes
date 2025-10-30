@@ -108,10 +108,12 @@ const getCountryData = function (country) {
 };
 getCountryData('portugal');
 ```
+<img width="492" height="285" alt="image" src="https://github.com/user-attachments/assets/6e57af99-ef34-4f77-b8fc-6176b9b8b1d7" />
+
 - here whats happening:
-- The fetch function returns a promise.
-- We handle that promise using the then method.
-- To read the data from the response, we call the json method on the response object, which returns another promise.
+- **The fetch function returns a promise.**
+- **We handle that promise using the then method.**
+- **To read the data from the response, we call the json method on the response object, which returns another promise.**
 - We return this promise and handle it with another then method.
 - The resolved value of this second promise is the actual data we want.
 - Finally, we render the first country from the data array by calling `renderCountry(data[0])`.
@@ -134,67 +136,248 @@ This guide explains:
 - How to return Promises correctly
 - How to avoid nesting (callback hell)
 
----
+## error handling
+```
+'use strict';
+const btn = document.querySelector('.btn-country');
+const countriesContainer = document.querySelector('.countries');
+const renderCountry = function (data, className = '') {
+  const html = `
+      <article class="country ${className}">
+        <img class="country__img" src="${data.flags.png}" />
+        <div class="country__data">
+          <h3 class="country__name">${data.name.common}</h3>
+          <h4 class="country__region">${data.region}</h4>
+          <p class="country__row"><span>👫</span>${(
+            data.population / 1000000
+          ).toFixed(1)}M people</p>
+          <p class="country__row"><span>🗣️</span>${
+            Object.values(data.languages)[0]
+          }</p>
+          <p class="country__row"><span>💰</span>${
+            Object.values(data.currencies)[0].name
+          }</p>
+        </div>
+      </article>`;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
+const request = fetch('https://restcountries.com/v3.1/name/portugal');
+console.log(request);
+const renderError = function (msg) {
+  countriesContainer.insertAdjacentElement('beforeend', msg);
+  countriesContainer.style.opacity = 1;
+};
+const getData = function (country) {
+  fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(
+      (response) => response.json(),
+      (err) => alert(err)
+    )
+    .then(function (data) {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+      if (!neighbour) return;
+      return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
+    })
 
-## 🧩 1️⃣ Promises Can Be Chained for Sequential Operations
-
-Imagine you need to:
-1. Fetch user data  
-2. Then fetch that user’s posts  
-3. Then fetch post comments  
-
-Instead of deeply nested callbacks 👇
-
-### ❌ Callback Hell Example
-```js
-getUser(1, (user) => {
-  getPosts(user.id, (posts) => {
-    getComments(posts[0].id, (comments) => {
-      console.log(comments);
+    .then((response) => response.json())
+    .then((data) => renderCountry(data[0], 'neighbour'))
+    .catch((err) => {
+      console.log('error');
+      renderError(`something went wrong ${err.msg}.Try again`);
     });
-  });
+};
+getData('india');
+btn.addEventListener('click', function () {
+  getData('india');
 });
-
-# Yt
-```
-let order = (call_production) => {
-  console.log("Order placed");
-  call_production();
-};
-let production = () => {
-  console.log("order received starting preparation");
-};
-order(production);
-
 ```
 
+- `.then()` is always called after the promise is fullfilled.
+- `.catch()` is always called when promise is rejected.
+- `.finally()` finally method executes a callback regardless of promise fulfillment or rejection. like the **loading circle**.
 
 
 
 
 
 
+# 🧠 1️⃣ The Problem --- Why We Need to "Throw" Errors Manually
+
+When we use `fetch()` in JavaScript like this:
+
+``` js
+fetch('https://restcountries.com/v3.1/name/xyzcountry')
 ```
-let stocks = {
-  Fruits: ["Strawberry", "grapes", "banana", "apple"]
+
+If that country doesn't exist, the API gives a 404 error (resource not
+found).\
+BUT --- here's the surprise 👇
+
+❗Even though it's a 404 (error on the server), the `fetch()` Promise
+does **NOT** reject.
+
+Instead, it resolves successfully, giving you a "Response" object with:
+
+    response.ok = false
+    response.status = 404
+
+So your `.then()` still runs --- even though your request failed.\
+That's why your next `.then()` tries to read `data.flags.png` --- but
+data is empty ---\
+and you get:
+
+    Cannot read properties of undefined.
+
+------------------------------------------------------------------------
+
+## 🧱 2️⃣ The Fix --- "Throwing" Your Own Error
+
+Since `fetch()` doesn't automatically reject,\
+we must manually reject the Promise when something is wrong.
+
+That's done by using:
+
+``` js
+if (!response.ok) throw new Error(`Country not found (${response.status})`);
+```
+
+`throw new Error()` → creates and throws a new error object\
+Throwing an error inside `.then()` → immediately rejects the current
+Promise\
+The rejection is caught by the nearest `.catch()`
+
+✅ **Example:**
+
+``` js
+fetch('https://restcountries.com/v3.1/name/xyzcountry')
+  .then(response => {
+    if (!response.ok)
+      throw new Error(`Country not found (${response.status})`);
+    return response.json();
+  })
+  .then(data => console.log(data))
+  .catch(err => console.error(`${err.message} 💥`));
+```
+
+🧩 **Output:**
+
+    Country not found (404) 💥
+
+No weird "Cannot read undefined" errors anymore.\
+You've created a clean, readable, intentional rejection.
+
+------------------------------------------------------------------------
+
+## ⚙️ 3️⃣ What Happens Behind the Scenes
+
+When `throw new Error()` executes:
+
+1.  The current `.then()` handler stops immediately\
+2.  The Promise becomes **rejected**\
+3.  The control "jumps down" to the nearest `.catch()` handler
+
+This flow is just like `try...catch` in synchronous code,\
+but here it's asynchronous --- inside Promises.
+
+------------------------------------------------------------------------
+
+## 🧰 4️⃣ The Helper Function --- getJSON()
+
+To avoid repeating this logic in every fetch, we create a reusable
+helper function:
+
+``` js
+function getJSON(url, errorMessage = 'Something went wrong') {
+  return fetch(url).then(response => {
+    if (!response.ok)
+      throw new Error(`${errorMessage} (${response.status})`);
+    return response.json();
+  });
+}
+```
+
+Now instead of writing 5 lines every time, we can simply do:
+
+``` js
+getJSON(`https://restcountries.com/v3.1/name/portugal`, 'Country not found')
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+```
+
+------------------------------------------------------------------------
+
+## 🌍 5️⃣ Example: Country + Neighbor + Neighbor's Neighbor
+
+Here's how the full flow works with error handling:
+
+``` js
+const getJSON = function (url, errorMessage = 'Something went wrong') {
+  return fetch(url).then(response => {
+    if (!response.ok)
+      throw new Error(`${errorMessage} (${response.status})`);
+    return response.json();
+  });
 };
 
-let order = (fruit_name, call_production) => {
-  setTimeout(() => {
-    console.log(`${stocks.Fruits[fruit_name]}`);
-    call_production();
-  }, 2000);
+const getCountryData = function (country) {
+  getJSON(`https://restcountries.com/v3.1/name/${country}`, 'Country not found')
+    .then(data => {
+      const neighbour = data[0].borders?.[0];
+      if (!neighbour) throw new Error('No neighbor found!');
+      return getJSON(
+        `https://restcountries.com/v3.1/alpha/${neighbour}`,
+        'Neighbor not found'
+      );
+    })
+    .then(data => console.log(data[0]))
+    .catch(err => console.error(`${err.message} 💥`));
 };
-let production = () => {
-  setTimeout(() => {
-    console.log(`Prep started`);
-    setTimeout(() => {
-      console.log("Fruit has been chopped");
-      setTimeout(()=>{
-        console.log(`${stocks.liquid[0]} and thta was added!`)
-      },1000)
-    }, 2000);
-  }, 0000);
-};
-order(0, production);
+
+getCountryData('india');
 ```
+
+------------------------------------------------------------------------
+
+## ⚡️ 6️⃣ What Happens Step by Step
+
+  Step   Code Stage              What Happens
+  ------ ----------------------- ----------------------------------
+  1      `fetch()` runs          Sends HTTP request
+  2      Response arrives        `response.ok` checked
+  3      If ok == false          Throws new error
+  4      Promise rejects         Jumps to `.catch()`
+  5      If OK                   Continues with `.then()`
+  6      If neighbor missing     Throws "No neighbor found" error
+  7      `.catch()` catches it   Shows clean error message
+
+------------------------------------------------------------------------
+
+## 💡 Key Takeaways
+
+  -----------------------------------------------------------------------
+  Concept                             Meaning
+  ----------------------------------- -----------------------------------
+  `fetch()`                           Returns Promise → only rejects on
+                                      network failure, not on 404
+
+  `response.ok`                       Boolean → true if 200--299
+
+  `throw new Error()`                 Manually rejects Promise
+
+  `.catch()`                          Handles all thrown or automatic
+                                      errors
+
+  `getJSON()`                         Helper to make clean, reusable
+                                      fetch logic
+
+  `throw` inside `.then()`            Instantly jumps to `.catch()` below
+  -----------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+✅ **Summary in one line:**\
+`throw new Error()` inside `.then()` = instantly rejects that Promise,
+skipping to `.catch()`, allowing you to handle failures cleanly.
+
