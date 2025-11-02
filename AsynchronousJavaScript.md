@@ -380,6 +380,7 @@ getCountryData('india');
 ✅ **Summary in one line:**\
 `throw new Error()` inside `.then()` = instantly rejects that Promise,
 skipping to `.catch()`, allowing you to handle failures cleanly.
+Its to provide new error manually.
 
 
 ## Geocoding challenge
